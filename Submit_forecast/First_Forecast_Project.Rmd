@@ -264,7 +264,7 @@ wflow_resample_fit <-
   tune_grid(resamples = folds,
             grid = 25,
             control = control_grid(save_pred = TRUE),
-            metrics = metric_set(rmse))
+            metrics = yardstick::metric_set(yardstick::rmse)) #error on metric_set fixed by using yardstick
 
 
 wflow_resample_fit %>% 
@@ -307,7 +307,7 @@ pred_test
 #Step 6: Evaluate model
 ```{r}
 #We will evaluate the performance of our predictions of the testing data using two metrics (rmse and rsq). The function metric_set defines the set of metric we will be using them. It creates a function called multi_metric() that we will use to calculate the metrics. We pipe in the predicted test data (pred_test) and tell the function that our truth (i.e., observed data) is the temperature column and the predictions (i.e., estimate) is the .pred column
-multi_metric <- metric_set(rmse, rsq)
+multi_metric <- yardstick::metric_set(yardstick::rmse, yardstick::rsq)
 
 metric_table <- pred_test |> 
   multi_metric(truth = temperature, estimate = .pred)
