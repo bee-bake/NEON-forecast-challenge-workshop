@@ -10,15 +10,20 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+```{r}
+options(repos = c(CRAN = "https://cloud.r-project.org"))
+```
+
 ```{r eval = T}
-#install.packages('tidymodels')
-#install.packages('readr') # package for applying simple forecasting methods
-#install.packages('lubridate') # package for dealing with time series data sets and tsibble objects
-#install.packages('tidyverse') # collection of R packages for data manipulation, analysis, and visualisation
-#install.packages('dplyr')# working with dates and times
-#install.packages('ranger')
-#install.packages('randomForest')
-#remotes::install_github('eco4cast/neon4cast') # package from NEON4cast challenge organisers to assist with forecast building and submission
+install.packages('tidymodels')
+install.packages('readr') # package for applying simple forecasting methods
+install.packages('lubridate') # package for dealing with time series data sets and tsibble objects
+install.packages('tidyverse') # collection of R packages for data manipulation, analysis, and visualisation
+install.packages('dplyr')# working with dates and times
+install.packages('ranger')
+install.packages('randomForest')
+remotes::install_github('eco4cast/neon4cast', force = T) # package from NEON4cast challenge organisers to assist with forecast building and submission
+
 ```
 
 #Initialize the libraries
@@ -272,8 +277,7 @@ wflow_resample_fit %>%
   arrange(mean)
 
 #select the best hyper-parameters
-best_hyperparameters <- wflow_resample_fit %>%
-  select_best("rmse")
+best_hyperparameters <- select_best(wflow_resample_fit, metric = "rmse")
 
 best_hyperparameters
 
@@ -314,6 +318,8 @@ metric_table <- pred_test |>
 
 metric_table
 ```
+
+
 ```{r}
 predictions <- pred_test$.pred
 actual_values <- pred_test$temperature
